@@ -1,7 +1,7 @@
-class Classroom {
+class Student {
     public registration: number;
 
-    public student: string;
+    public name: string;
 
     public absence: number;
 
@@ -15,9 +15,9 @@ class Classroom {
 
     public noteForApproval?: number;
 
-    constructor(props: Classroom) {
+    constructor(props: Student) {
         this.registration = props.registration;
-        this.student = props.student;
+        this.name = props.name;
         this.absence = props.absence;
         this.firstTest = props.firstTest;
         this.secondTest = props.secondTest;
@@ -27,4 +27,4 @@ class Classroom {
     }
 }
 
-export default Classroom;
+export default Student;
