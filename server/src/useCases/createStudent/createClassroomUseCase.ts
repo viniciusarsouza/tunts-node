@@ -1,6 +1,6 @@
 import Student from '../../entities/Student';
 import IStudentsRepository from '../../repositories/IStudentsRepository';
-import ICreateClassroomDTO from './ICreateStudentDTO';
+import ICreateStudentDTO from './ICreateStudentDTO';
 
 class CreateClassroomUseCase {
     constructor(private studentsRepository: IStudentsRepository) {}
