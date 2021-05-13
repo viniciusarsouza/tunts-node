@@ -17,6 +17,9 @@ Copiar e colar o documento em tunts-node/server/src/providers/spreadsheetsAPI/ke
 
 ```bash
 # Acesse a pasta do projeto no terminal/cmd
+$ cd tunts-node
+
+# Acesse a pasta do projeto no terminal/cmd
 $ cd server
 
 # Instale as dependências
@@ -27,7 +30,7 @@ $ yarn dev:server
 
 # O servidor inciará na porta:3333
 
-# Acesse o servidor local no browser d atualize a página
+# Acesse o servidor local no browser e atualize a página
 $ (http://localhost:3333/)
 ```
 
