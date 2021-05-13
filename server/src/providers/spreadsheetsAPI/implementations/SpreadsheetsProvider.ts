@@ -49,9 +49,23 @@ class SpreadsheetsProvider implements ISpreadsheetsProvider {
                 });
             });
         };
+
+        console.log('Dados coletados com sucesso!');
     }
 
     updateClassroom() {
+        const updateArray = [];
+
+        this.client.authorize((err, tokens) => {
+            if (err) {
+                console.log(err);
+                return;
+            } else {
+                console.log('Connected');
+                gsrun(this.client);
+            }
+        });
+
         this.classroomArray.map((cv) => {
             this.averageTest =
                 (Number(cv.firstTest) +
@@ -74,7 +88,24 @@ class SpreadsheetsProvider implements ISpreadsheetsProvider {
                         : (cv.situation = 'Reprovado por falta');
                 }
             }
+
+            updateArray.push([cv.situation, cv.noteForApproval]);
         });
+
+        const gsrun = async (cl) => {
+            const gsapi = google.sheets({ version: 'v4', auth: cl });
+
+            const updateOptions = {
+                spreadsheetId: '1jauAYA-ndsOZHR1mRPSBUCHG7B4k-XLuCmasg_b6XlQ',
+                range: 'G4',
+                valueInputOption: 'USER_ENTERED',
+                resource: { values: updateArray },
+            };
+
+            let res = await gsapi.spreadsheets.values.update(updateOptions);
+
+            console.log('Planilha atualizada com sucesso!');
+        };
 
         return this.classroomArray;
     }
