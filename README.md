@@ -28,7 +28,7 @@ $ yarn dev:server
 # O servidor inciará na porta:3333
 
 # Acesse o servidor local no browser d atualize a página
-$ http://localhost:3333/
+$ (http://localhost:3333/)
 ```
 
 ### Tecnologias
