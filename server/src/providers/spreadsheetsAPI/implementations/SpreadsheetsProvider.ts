@@ -5,22 +5,23 @@ import Student from '../../../entities/Student';
 import keys from '../keys/keys.json';
 
 class SpreadsheetsProvider implements ISpreadsheetsProvider {
-    getClassroom() {
-        const classroomArray: Student[] = [];
-        const client = new google.auth.JWT(
-            keys.client_email,
-            undefined,
-            keys.private_key,
-            ['https://www.googleapis.com/auth/spreadsheets'],
-        );
+    public classroomArray: Student[] = [];
 
-        client.authorize((err, tokens) => {
+    public client = new google.auth.JWT(
+        keys.client_email,
+        undefined,
+        keys.private_key,
+        ['https://www.googleapis.com/auth/spreadsheets'],
+    );
+
+    getClassroom() {
+        this.client.authorize((err, tokens) => {
             if (err) {
                 console.log(err);
                 return;
             } else {
                 console.log('Connected');
-                gsrun(client);
+                gsrun(this.client);
             }
         });
 
@@ -35,30 +36,19 @@ class SpreadsheetsProvider implements ISpreadsheetsProvider {
             const dataArray = (await gsapi.spreadsheets.values.get(options))
                 .data.values;
 
-            console.log(dataArray);
+            dataArray.map((cv) => {
+                this.classroomArray.push({
+                    registration: cv[0],
+                    name: cv[1],
+                    absence: cv[2],
+                    firstTest: cv[3],
+                    secondTest: cv[4],
+                    thirdTest: cv[5],
+                });
+            });
         };
 
-        // const fakeClassroom = [
-        //     {
-        //         registration: 1,
-        //         name: 'Aluno',
-        //         absence: 10,
-        //         firstTest: 60,
-        //         secondTest: 70,
-        //         thirdTest: 80,
-        //     },
-
-        //     {
-        //         registration: 2,
-        //         name: 'Eu',
-        //         absence: 10,
-        //         firstTest: 60,
-        //         secondTest: 70,
-        //         thirdTest: 80,
-        //     },
-        // ];
-
-        return classroomArray;
+        return this.classroomArray;
     }
 
     updateClassroom(classroom: Student[]) {
