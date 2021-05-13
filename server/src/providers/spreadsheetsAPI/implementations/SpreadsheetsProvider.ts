@@ -6,6 +6,7 @@ import keys from '../keys/keys.json';
 
 class SpreadsheetsProvider implements ISpreadsheetsProvider {
     public classroomArray: Student[] = [];
+    public averageTest: number = 0;
 
     public client = new google.auth.JWT(
         keys.client_email,
@@ -29,7 +30,7 @@ class SpreadsheetsProvider implements ISpreadsheetsProvider {
             const gsapi = google.sheets({ version: 'v4', auth: cl });
 
             const options = {
-                spreadsheetId: '1XvWJcRLj2WAeXO3ULQ_GxGm9---3SZkjMbGcXMJtt70',
+                spreadsheetId: '1jauAYA-ndsOZHR1mRPSBUCHG7B4k-XLuCmasg_b6XlQ',
                 range: 'A4:F27',
             };
 
@@ -44,15 +45,38 @@ class SpreadsheetsProvider implements ISpreadsheetsProvider {
                     firstTest: cv[3],
                     secondTest: cv[4],
                     thirdTest: cv[5],
+                    noteForApproval: 0,
                 });
             });
         };
-
-        return this.classroomArray;
     }
 
-    updateClassroom(classroom: Student[]) {
-        classroom = [];
+    updateClassroom() {
+        this.classroomArray.map((cv) => {
+            this.averageTest =
+                (Number(cv.firstTest) +
+                    Number(cv.secondTest) +
+                    Number(cv.thirdTest)) /
+                3;
+            if (this.averageTest < 50) {
+                cv.situation = 'Reprovado por nota';
+            } else {
+                if (
+                    this.averageTest >= 50 &&
+                    this.averageTest < 70 &&
+                    cv.absence > 15
+                ) {
+                    cv.situation = 'Exame Final';
+                    cv.noteForApproval = Math.ceil(100 - this.averageTest);
+                } else {
+                    cv.absence < 15
+                        ? (cv.situation = 'Aprovado')
+                        : (cv.situation = 'Reprovado por falta');
+                }
+            }
+        });
+
+        return this.classroomArray;
     }
 }
 

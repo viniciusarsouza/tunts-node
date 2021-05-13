@@ -1,8 +1,8 @@
 import Student from '../../entities/Student';
 
 interface ISpreadsheetsProvider {
-    getClassroom(): Student[];
-    updateClassroom(classroom: Student[]): void;
+    getClassroom(): void;
+    updateClassroom(): Student[];
 }
 
 export default ISpreadsheetsProvider;
